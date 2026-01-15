@@ -26,6 +26,9 @@ GRANT USAGE ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE PUBLIC;
 -- STEP 2: CREATE THE INNOCEAN INTELLIGENCE AGENT
 -- ============================================================================
 
+-- Drop existing agent first to ensure clean recreation
+DROP AGENT IF EXISTS SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE;
+
 CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
     COMMENT = 'Innocean USA Advertising Intelligence Agent - Analyzes campaigns, media performance, client financials, and creative assets using structured data and semantic search over unstructured documents.'
     PROFILE = '{
@@ -111,21 +114,21 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
             },
             {
                 "tool_spec": {
-                    "type": "snowflake_procedure",
+                    "type": "generic",
                     "name": "predict_campaign_performance",
                     "description": "ML model that predicts likelihood of campaigns meeting or exceeding performance targets. Returns success probability and key factors. Use for questions about campaign success predictions, which campaigns will perform well, and campaign planning."
                 }
             },
             {
                 "tool_spec": {
-                    "type": "snowflake_procedure",
+                    "type": "generic",
                     "name": "predict_client_churn",
                     "description": "ML model that identifies client accounts at risk of leaving or going to agency review. Returns churn probability, risk factors, and recommended actions. Use for questions about client retention risk, at-risk accounts, and churn prevention."
                 }
             },
             {
                 "tool_spec": {
-                    "type": "snowflake_procedure",
+                    "type": "generic",
                     "name": "optimize_media_budget",
                     "description": "ML model that recommends optimal media channel budget allocation based on historical performance. Returns current vs recommended spend percentages with expected ROAS improvement. Use for questions about media mix optimization, budget allocation, and channel investment decisions."
                 }
@@ -172,49 +175,28 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
                 "columns": ["GUIDELINE_ID", "GUIDELINE_TITLE", "GUIDELINE_CONTENT", "SECTION_TYPE", "BRAND_VOICE", "DO_DONT_GUIDELINES"]
             },
             "predict_campaign_performance": {
-                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CAMPAIGN_PERFORMANCE",
+                "type": "procedure",
+                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CAMPAIGN_PERFORMANCE(VARCHAR)",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                },
-                "arguments": [
-                    {
-                        "name": "CAMPAIGN_TYPE_FILTER",
-                        "type": "VARCHAR",
-                        "description": "Optional filter for campaign type (e.g., BRAND_AWARENESS, LEAD_GENERATION, PRODUCT_LAUNCH)",
-                        "required": false
-                    }
-                ]
+                }
             },
             "predict_client_churn": {
-                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CLIENT_CHURN",
+                "type": "procedure",
+                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CLIENT_CHURN(VARCHAR)",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                },
-                "arguments": [
-                    {
-                        "name": "CLIENT_SEGMENT_FILTER",
-                        "type": "VARCHAR",
-                        "description": "Optional filter for client segment (e.g., AUTOMOTIVE, RETAIL, CPG)",
-                        "required": false
-                    }
-                ]
+                }
             },
             "optimize_media_budget": {
-                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.OPTIMIZE_MEDIA_BUDGET",
+                "type": "procedure",
+                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.OPTIMIZE_MEDIA_BUDGET(VARCHAR)",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                },
-                "arguments": [
-                    {
-                        "name": "CAMPAIGN_OBJECTIVE_FILTER",
-                        "type": "VARCHAR",
-                        "description": "Optional filter for campaign objective (e.g., AWARENESS, CONSIDERATION, CONVERSION)",
-                        "required": false
-                    }
-                ]
+                }
             }
         }
     }
@@ -234,6 +216,9 @@ GRANT USAGE ON AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE TO ROLE
 CREATE SNOWFLAKE INTELLIGENCE IF NOT EXISTS SNOWFLAKE_INTELLIGENCE_OBJECT_DEFAULT;
 
 -- Add the agent to the Snowflake Intelligence object for discoverability
+-- Note: If re-running this script, first manually run:
+--   ALTER SNOWFLAKE INTELLIGENCE SNOWFLAKE_INTELLIGENCE_OBJECT_DEFAULT 
+--       DROP AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE;
 ALTER SNOWFLAKE INTELLIGENCE SNOWFLAKE_INTELLIGENCE_OBJECT_DEFAULT 
     ADD AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE;
 

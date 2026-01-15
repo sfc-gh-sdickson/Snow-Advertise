@@ -92,6 +92,7 @@ The solution includes:
 - `sql/views/05_create_semantic_views.sql`: Semantic views for AI agents (verified syntax)
 - `sql/search/06_create_cortex_search.sql`: Unstructured data tables and Cortex Search services
 - `sql/ml/07_create_model_wrapper_functions.sql`: ML model wrapper functions (optional)
+- `sql/agent/08_create_agent.sql`: **Snowflake Intelligence Agent creation**
 
 ### ML Models (Optional)
 - `notebooks/innocean_ml_models.ipynb`: Snowflake Notebook for training ML models
@@ -100,14 +101,16 @@ The solution includes:
 ## Setup Instructions
 
 ### Core Setup (Required)
-1. Execute SQL files in order (01 through 06)
+1. Execute SQL files in order (01 through 08)
    - 01: Database and schema setup
    - 02: Create tables
    - 03: Generate synthetic data (5-15 min)
    - 04: Create analytical views
    - 05: Create semantic views
    - 06: Create Cortex Search services (3-5 min)
-2. Follow AGENT_SETUP.md for agent configuration
+   - 07: (Optional) Create ML model wrapper functions
+   - **08: Create the Snowflake Intelligence Agent**
+2. Access the agent via AI & ML > Snowflake Intelligence in Snowsight
 3. Test with questions from questions.md
 4. Test Cortex Search with sample queries in AGENT_SETUP.md Step 5
 
@@ -288,15 +291,27 @@ Key verification points:
 
 -- 6. Create Cortex Search services (3-5 minutes)
 @sql/search/06_create_cortex_search.sql
+
+-- 7. (Optional) Create ML model wrapper functions
+@sql/ml/07_create_model_wrapper_functions.sql
+
+-- 8. Create the Snowflake Intelligence Agent
+@sql/agent/08_create_agent.sql
 ```
 
+### Access the Agent
+After running the setup scripts:
+1. Navigate to **AI & ML > Snowflake Intelligence** in Snowsight
+2. Select **Innocean Intelligence** from the agent dropdown
+3. Start asking questions!
+
 ### Configure Agent
-Follow the detailed instructions in `docs/AGENT_SETUP.md` to:
-1. Create the Snowflake Intelligence Agent
-2. Add semantic views as data sources
-3. Configure Cortex Search services
-4. Set up system prompts
-5. Test with sample questions
+The agent is automatically created by `sql/agent/08_create_agent.sql`. For manual configuration or customization, see `docs/AGENT_SETUP.md` which covers:
+1. Agent architecture and tool configuration
+2. Adding or modifying semantic views
+3. Configuring Cortex Search services
+4. Customizing system prompts and instructions
+5. Testing with sample questions
 
 ## Testing
 
@@ -350,6 +365,12 @@ For questions or issues:
 - Contact your Snowflake account team for assistance
 
 ## Version History
+
+- **v1.1** (January 2026): Added automated agent creation
+  - New `sql/agent/08_create_agent.sql` for one-command agent setup
+  - Agent includes 3 Cortex Analyst tools + 3 Cortex Search tools + data_to_chart
+  - Automatic registration with Snowflake Intelligence
+  - Updated documentation
 
 - **v1.0** (January 2026): Initial release
   - Verified semantic view syntax

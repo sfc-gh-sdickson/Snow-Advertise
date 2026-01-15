@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 520">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 480">
   <defs>
     <linearGradient id="agentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#29B5E8;stop-opacity:1" />
@@ -12,6 +12,10 @@
       <stop offset="0%" style="stop-color:#6B5CE7;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#5244C4;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="mlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E67E22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D35400;stop-opacity:1" />
+    </linearGradient>
     <linearGradient id="rawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#2ECC71;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#27AE60;stop-opacity:1" />
@@ -22,37 +26,66 @@
   </defs>
 
   <!-- Main Agent Container -->
-  <rect x="30" y="20" width="640" height="280" rx="12" fill="url(#agentGrad)" filter="url(#shadow)"/>
-  <text x="350" y="52" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Snowflake Intelligence Agent</text>
+  <rect x="30" y="20" width="690" height="230" rx="12" fill="url(#agentGrad)" filter="url(#shadow)"/>
+  <text x="375" y="50" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Snowflake Intelligence Agent</text>
 
   <!-- Semantic Views Box -->
-  <rect x="50" y="70" width="600" height="95" rx="8" fill="url(#semanticGrad)" filter="url(#shadow)"/>
-  <text x="350" y="95" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Semantic Views (Structured Data)</text>
-  <text x="70" y="120" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_CAMPAIGN_CREATIVE_INTELLIGENCE</text>
-  <text x="70" y="140" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_MEDIA_PERFORMANCE_INTELLIGENCE</text>
-  <text x="70" y="160" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_CLIENT_FINANCIAL_INTELLIGENCE</text>
+  <rect x="50" y="70" width="210" height="165" rx="8" fill="url(#semanticGrad)" filter="url(#shadow)"/>
+  <text x="155" y="95" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Semantic Views</text>
+  <text x="155" y="112" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">(Structured Data)</text>
+  <text x="60" y="138" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; SV_CAMPAIGN_CREATIVE</text>
+  <text x="68" y="152" font-family="Arial, sans-serif" font-size="9" fill="white">_INTELLIGENCE</text>
+  <text x="60" y="172" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; SV_MEDIA_PERFORMANCE</text>
+  <text x="68" y="186" font-family="Arial, sans-serif" font-size="9" fill="white">_INTELLIGENCE</text>
+  <text x="60" y="206" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; SV_CLIENT_FINANCIAL</text>
+  <text x="68" y="220" font-family="Arial, sans-serif" font-size="9" fill="white">_INTELLIGENCE</text>
 
   <!-- Cortex Search Box -->
-  <rect x="50" y="180" width="600" height="105" rx="8" fill="url(#cortexGrad)" filter="url(#shadow)"/>
-  <text x="350" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Cortex Search (Unstructured Data)</text>
-  <text x="70" y="235" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; CREATIVE_BRIEFS_SEARCH</text>
-  <text x="70" y="255" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; CAMPAIGN_REPORTS_SEARCH</text>
-  <text x="70" y="275" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; BRAND_GUIDELINES_SEARCH</text>
+  <rect x="270" y="70" width="210" height="165" rx="8" fill="url(#cortexGrad)" filter="url(#shadow)"/>
+  <text x="375" y="95" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Cortex Search</text>
+  <text x="375" y="112" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">(Unstructured Data)</text>
+  <text x="280" y="138" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; CREATIVE_BRIEFS_SEARCH</text>
+  <text x="280" y="165" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; CAMPAIGN_REPORTS_SEARCH</text>
+  <text x="280" y="192" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; BRAND_GUIDELINES_SEARCH</text>
 
-  <!-- Arrow -->
-  <path d="M350 300 L350 340 L340 330 M350 340 L360 330" stroke="#555" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- ML Models Box -->
+  <rect x="490" y="70" width="210" height="165" rx="8" fill="url(#mlGrad)" filter="url(#shadow)"/>
+  <text x="595" y="95" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">ML Models</text>
+  <text x="595" y="112" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">(Predictive Analytics)</text>
+  <text x="500" y="138" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; CAMPAIGN_PERFORMANCE</text>
+  <text x="508" y="152" font-family="Arial, sans-serif" font-size="9" fill="white">_PREDICTOR</text>
+  <text x="500" y="172" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; CLIENT_CHURN_PREDICTOR</text>
+  <text x="500" y="199" font-family="Arial, sans-serif" font-size="9" fill="white">&#8226; BUDGET_OPTIMIZATION</text>
+  <text x="508" y="213" font-family="Arial, sans-serif" font-size="9" fill="white">_MODEL</text>
 
-  <!-- RAW Schema Box -->
-  <rect x="100" y="355" width="500" height="150" rx="12" fill="url(#rawGrad)" filter="url(#shadow)"/>
-  <text x="350" y="385" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">RAW Schema (Source Data)</text>
+  <!-- Arrow from Semantic Views -->
+  <path d="M155 250 L155 295 L145 285 M155 295 L165 285" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Arrow from Cortex Search -->
+  <path d="M375 250 L375 295 L365 285 M375 295 L385 285" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Arrow from ML Models -->
+  <path d="M595 250 L595 295 L585 285 M595 295 L605 285" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- RAW Schema Box (Gold Layer) -->
+  <rect x="75" y="310" width="600" height="155" rx="12" fill="url(#rawGrad)" filter="url(#shadow)"/>
+  <text x="375" y="340" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">RAW Schema (Gold Layer)</text>
   
-  <!-- Two columns for RAW schema items -->
-  <text x="130" y="415" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Clients, Campaigns, Creative Assets</text>
-  <text x="130" y="435" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Media Placements, Performance</text>
-  <text x="130" y="455" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Employees, Projects, Timesheets</text>
-  <text x="130" y="475" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Invoices, Vendors, Talent</text>
-  
-  <text x="400" y="415" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Creative Briefs (Unstructured)</text>
-  <text x="400" y="435" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Campaign Reports (Unstructured)</text>
-  <text x="400" y="455" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Brand Guidelines (Unstructured)</text>
+  <!-- Three columns for RAW schema items -->
+  <text x="105" y="375" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Clients</text>
+  <text x="105" y="395" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Campaigns</text>
+  <text x="105" y="415" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Creative Assets</text>
+  <text x="105" y="435" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Media Placements</text>
+  <text x="105" y="455" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Media Performance</text>
+
+  <text x="295" y="375" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Employees</text>
+  <text x="295" y="395" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Projects</text>
+  <text x="295" y="415" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Timesheets</text>
+  <text x="295" y="435" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Invoices</text>
+  <text x="295" y="455" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Vendors, Talent</text>
+
+  <text x="485" y="375" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Creative Briefs</text>
+  <text x="485" y="395" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Campaign Reports</text>
+  <text x="485" y="415" font-family="Arial, sans-serif" font-size="10" fill="white">&#8226; Brand Guidelines</text>
+  <text x="485" y="435" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.7)" font-style="italic">(Unstructured Data)</text>
 </svg>

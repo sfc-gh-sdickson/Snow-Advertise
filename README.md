@@ -339,37 +339,7 @@ SELECT PARSE_JSON(
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                   Snowflake Intelligence Agent                   │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │              Semantic Views (Structured Data)              │ │
-│  │  • SV_CAMPAIGN_CREATIVE_INTELLIGENCE                       │ │
-│  │  • SV_MEDIA_PERFORMANCE_INTELLIGENCE                       │ │
-│  │  • SV_CLIENT_FINANCIAL_INTELLIGENCE                        │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │          Cortex Search (Unstructured Data)                 │ │
-│  │  • CREATIVE_BRIEFS_SEARCH                                  │ │
-│  │  • CAMPAIGN_REPORTS_SEARCH                                 │ │
-│  │  • BRAND_GUIDELINES_SEARCH                                 │ │
-│  └────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-        ┌──────────────────────────────────────────┐
-        │         RAW Schema (Source Data)         │
-        │  • Clients, Campaigns, Creative Assets   │
-        │  • Media Placements, Performance         │
-        │  • Employees, Projects, Timesheets       │
-        │  • Invoices, Vendors, Talent             │
-        │  • Creative Briefs (Unstructured)        │
-        │  • Campaign Reports (Unstructured)       │
-        │  • Brand Guidelines (Unstructured)       │
-        └──────────────────────────────────────────┘
-```
+<img src="architecture.svg" width="700">
 
 ## Support
 

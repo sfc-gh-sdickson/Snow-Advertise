@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 520">
+  <defs>
+    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#29B5E8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E8CB4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="semanticGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90D9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3672B8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cortexGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B5CE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5244C4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ECC71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27AE60;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Main Agent Container -->
+  <rect x="30" y="20" width="640" height="280" rx="12" fill="url(#agentGrad)" filter="url(#shadow)"/>
+  <text x="350" y="52" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Snowflake Intelligence Agent</text>
+
+  <!-- Semantic Views Box -->
+  <rect x="50" y="70" width="600" height="95" rx="8" fill="url(#semanticGrad)" filter="url(#shadow)"/>
+  <text x="350" y="95" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Semantic Views (Structured Data)</text>
+  <text x="70" y="120" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_CAMPAIGN_CREATIVE_INTELLIGENCE</text>
+  <text x="70" y="140" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_MEDIA_PERFORMANCE_INTELLIGENCE</text>
+  <text x="70" y="160" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; SV_CLIENT_FINANCIAL_INTELLIGENCE</text>
+
+  <!-- Cortex Search Box -->
+  <rect x="50" y="180" width="600" height="105" rx="8" fill="url(#cortexGrad)" filter="url(#shadow)"/>
+  <text x="350" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Cortex Search (Unstructured Data)</text>
+  <text x="70" y="235" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; CREATIVE_BRIEFS_SEARCH</text>
+  <text x="70" y="255" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; CAMPAIGN_REPORTS_SEARCH</text>
+  <text x="70" y="275" font-family="Arial, sans-serif" font-size="12" fill="white">&#8226; BRAND_GUIDELINES_SEARCH</text>
+
+  <!-- Arrow -->
+  <path d="M350 300 L350 340 L340 330 M350 340 L360 330" stroke="#555" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- RAW Schema Box -->
+  <rect x="100" y="355" width="500" height="150" rx="12" fill="url(#rawGrad)" filter="url(#shadow)"/>
+  <text x="350" y="385" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">RAW Schema (Source Data)</text>
+  
+  <!-- Two columns for RAW schema items -->
+  <text x="130" y="415" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Clients, Campaigns, Creative Assets</text>
+  <text x="130" y="435" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Media Placements, Performance</text>
+  <text x="130" y="455" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Employees, Projects, Timesheets</text>
+  <text x="130" y="475" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Invoices, Vendors, Talent</text>
+  
+  <text x="400" y="415" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Creative Briefs (Unstructured)</text>
+  <text x="400" y="435" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Campaign Reports (Unstructured)</text>
+  <text x="400" y="455" font-family="Arial, sans-serif" font-size="11" fill="white">&#8226; Brand Guidelines (Unstructured)</text>
+</svg>

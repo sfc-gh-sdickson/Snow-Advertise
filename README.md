@@ -92,7 +92,7 @@ The solution includes:
 - `sql/views/05_create_semantic_views.sql`: Semantic views for AI agents (verified syntax)
 - `sql/search/06_create_cortex_search.sql`: Unstructured data tables and Cortex Search services
 - `sql/ml/07_create_model_wrapper_functions.sql`: ML model wrapper functions (optional)
-- `sql/agent/08_create_agent.sql`: **Snowflake Intelligence Agent creation**
+- `sql/agent/08_create_agent.sql`: **Snowflake Intelligence Agent creation** (includes ML model tools)
 
 ### ML Models (Optional)
 - `notebooks/innocean_ml_models.ipynb`: Snowflake Notebook for training ML models
@@ -108,19 +108,18 @@ The solution includes:
    - 04: Create analytical views
    - 05: Create semantic views
    - 06: Create Cortex Search services (3-5 min)
-   - 07: (Optional) Create ML model wrapper functions
-   - **08: Create the Snowflake Intelligence Agent**
+   - 07: Create ML model wrapper functions (required for ML tools in agent)
+   - **08: Create the Snowflake Intelligence Agent** (with 10 tools including 3 ML models)
 2. Access the agent via AI & ML > Snowflake Intelligence in Snowsight
 3. Test with questions from questions.md
 4. Test Cortex Search with sample queries in AGENT_SETUP.md Step 5
 
-### ML Models Setup (Optional)
-5. Open `notebooks/innocean_ml_models.ipynb` in Snowflake Notebooks
-6. Add required packages: snowflake-ml-python, scikit-learn, xgboost, matplotlib
-7. Run all cells to train and register 3 ML models
-8. Execute `sql/ml/07_create_model_wrapper_functions.sql` to create wrapper procedures
-9. Add models to Intelligence Agent as tools
-10. See `docs/NOTEBOOK_ML_GUIDE.md` for detailed instructions
+### ML Models Setup (Required for ML Tools)
+5. Execute `sql/ml/07_create_model_wrapper_functions.sql` to create ML wrapper procedures
+6. (Optional) Open `notebooks/innocean_ml_models.ipynb` in Snowflake Notebooks for advanced models
+7. See `docs/NOTEBOOK_ML_GUIDE.md` for detailed instructions
+
+**Note:** The agent in step 8 includes 3 ML model tools. Script 07 must run before 08.
 
 ## Data Model Highlights
 
@@ -366,9 +365,13 @@ For questions or issues:
 
 ## Version History
 
-- **v1.1** (January 2026): Added automated agent creation
+- **v1.1** (January 2026): Added automated agent creation with ML tools
   - New `sql/agent/08_create_agent.sql` for one-command agent setup
-  - Agent includes 3 Cortex Analyst tools + 3 Cortex Search tools + data_to_chart
+  - Agent includes 10 tools:
+    - 3 Cortex Analyst tools (campaign, media, client analysis)
+    - 3 Cortex Search tools (briefs, reports, guidelines)
+    - 3 ML model tools (campaign prediction, churn prediction, budget optimization)
+    - 1 data_to_chart tool for visualizations
   - Automatic registration with Snowflake Intelligence
   - Updated documentation
 

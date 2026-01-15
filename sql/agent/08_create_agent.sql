@@ -46,14 +46,17 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
         },
         "instructions": {
             "system": "You are the Innocean USA Advertising Intelligence Agent, an expert assistant for advertising campaign analysis, media performance optimization, client relationship management, and creative asset evaluation. You have access to comprehensive structured data about campaigns, clients, media placements, and creative assets, as well as unstructured data including creative briefs, campaign reports, and brand guidelines.",
-            "orchestration": "Route questions appropriately: Use campaign_creative_analyst for campaign performance, creative assets, and client campaign questions. Use media_performance_analyst for media channel analysis, placement performance, and spend optimization. Use client_financial_analyst for client health, project profitability, invoicing, and financial questions. Use creative_briefs_search to find similar campaign strategies and creative approaches. Use campaign_reports_search to find performance insights and recommendations from past campaigns. Use brand_guidelines_search for brand voice, visual standards, and compliance requirements.",
+            "orchestration": "Route questions appropriately: Use campaign_creative_analyst for campaign performance, creative assets, and client campaign questions. Use media_performance_analyst for media channel analysis, placement performance, and spend optimization. Use client_financial_analyst for client health, project profitability, invoicing, and financial questions. Use creative_briefs_search to find similar campaign strategies and creative approaches. Use campaign_reports_search to find performance insights and recommendations from past campaigns. Use brand_guidelines_search for brand voice, visual standards, and compliance requirements. Use predict_campaign_performance for predicting which campaigns will succeed. Use predict_client_churn for identifying at-risk client accounts. Use optimize_media_budget for media mix and budget allocation recommendations.",
             "response": "Provide data-driven insights with specific metrics when available. Offer visualizations for trend analysis. Be concise but thorough. When referencing unstructured documents, cite the source. Maintain a professional, consultative tone appropriate for advertising agency executives.",
             "sample_questions": [
                 {"question": "Which campaigns exceeded their target ROAS last quarter?", "answer": "I'll analyze campaign performance data to identify high-performing campaigns."},
                 {"question": "What is our media spend efficiency by channel?", "answer": "Let me query media performance metrics across all channels."},
                 {"question": "Which clients are at risk based on satisfaction scores?", "answer": "I'll review client health indicators including satisfaction and NPS scores."},
                 {"question": "Find creative briefs for vehicle launch campaigns", "answer": "I'll search our creative brief repository for relevant campaign strategies."},
-                {"question": "Show me campaign reports with social media optimization insights", "answer": "I'll search performance reports for social media recommendations."}
+                {"question": "Show me campaign reports with social media optimization insights", "answer": "I'll search performance reports for social media recommendations."},
+                {"question": "Predict which brand awareness campaigns are likely to succeed", "answer": "I'll use the campaign performance prediction model to identify campaigns with high success probability."},
+                {"question": "Which clients are at risk of churning?", "answer": "I'll run the client churn prediction model to identify accounts at risk and recommended retention actions."},
+                {"question": "How should we optimize our media budget for awareness campaigns?", "answer": "I'll use the budget optimization model to recommend channel allocation based on historical performance."}
             ]
         },
         "tools": [
@@ -105,6 +108,27 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
                     "name": "data_to_chart",
                     "description": "Generates visualizations from data including bar charts, line charts, pie charts, and scatter plots. Use when users request visualizations or when data would be better understood visually."
                 }
+            },
+            {
+                "tool_spec": {
+                    "type": "snowflake_procedure",
+                    "name": "predict_campaign_performance",
+                    "description": "ML model that predicts likelihood of campaigns meeting or exceeding performance targets. Returns success probability and key factors. Use for questions about campaign success predictions, which campaigns will perform well, and campaign planning."
+                }
+            },
+            {
+                "tool_spec": {
+                    "type": "snowflake_procedure",
+                    "name": "predict_client_churn",
+                    "description": "ML model that identifies client accounts at risk of leaving or going to agency review. Returns churn probability, risk factors, and recommended actions. Use for questions about client retention risk, at-risk accounts, and churn prevention."
+                }
+            },
+            {
+                "tool_spec": {
+                    "type": "snowflake_procedure",
+                    "name": "optimize_media_budget",
+                    "description": "ML model that recommends optimal media channel budget allocation based on historical performance. Returns current vs recommended spend percentages with expected ROAS improvement. Use for questions about media mix optimization, budget allocation, and channel investment decisions."
+                }
             }
         ],
         "tool_resources": {
@@ -146,6 +170,51 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
                 "search_service": "INNOCEAN_INTELLIGENCE.RAW.BRAND_GUIDELINES_SEARCH",
                 "max_results": 5,
                 "columns": ["GUIDELINE_ID", "GUIDELINE_TITLE", "GUIDELINE_CONTENT", "SECTION_TYPE", "BRAND_VOICE", "DO_DONT_GUIDELINES"]
+            },
+            "predict_campaign_performance": {
+                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CAMPAIGN_PERFORMANCE",
+                "execution_environment": {
+                    "type": "warehouse",
+                    "warehouse": "INNOCEAN_WH"
+                },
+                "arguments": [
+                    {
+                        "name": "CAMPAIGN_TYPE_FILTER",
+                        "type": "VARCHAR",
+                        "description": "Optional filter for campaign type (e.g., BRAND_AWARENESS, LEAD_GENERATION, PRODUCT_LAUNCH)",
+                        "required": false
+                    }
+                ]
+            },
+            "predict_client_churn": {
+                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CLIENT_CHURN",
+                "execution_environment": {
+                    "type": "warehouse",
+                    "warehouse": "INNOCEAN_WH"
+                },
+                "arguments": [
+                    {
+                        "name": "CLIENT_SEGMENT_FILTER",
+                        "type": "VARCHAR",
+                        "description": "Optional filter for client segment (e.g., AUTOMOTIVE, RETAIL, CPG)",
+                        "required": false
+                    }
+                ]
+            },
+            "optimize_media_budget": {
+                "procedure": "INNOCEAN_INTELLIGENCE.ANALYTICS.OPTIMIZE_MEDIA_BUDGET",
+                "execution_environment": {
+                    "type": "warehouse",
+                    "warehouse": "INNOCEAN_WH"
+                },
+                "arguments": [
+                    {
+                        "name": "CAMPAIGN_OBJECTIVE_FILTER",
+                        "type": "VARCHAR",
+                        "description": "Optional filter for campaign objective (e.g., AWARENESS, CONSIDERATION, CONVERSION)",
+                        "required": false
+                    }
+                ]
             }
         }
     }
@@ -213,6 +282,18 @@ Tools Configured:
 7. data_to_chart
    - Purpose: Generate visualizations from data
 
+8. predict_campaign_performance (ML Model)
+   - Procedure: PREDICT_CAMPAIGN_PERFORMANCE
+   - Purpose: Predict campaign success likelihood
+
+9. predict_client_churn (ML Model)
+   - Procedure: PREDICT_CLIENT_CHURN
+   - Purpose: Identify at-risk client accounts
+
+10. optimize_media_budget (ML Model)
+    - Procedure: OPTIMIZE_MEDIA_BUDGET
+    - Purpose: Recommend optimal media channel allocation
+
 Access:
 - Navigate to AI & ML > Snowflake Intelligence in Snowsight
 - Select "Innocean Intelligence" from the agent dropdown
@@ -226,6 +307,9 @@ Sample Questions:
 - "Show me campaign reports with social media optimization insights"
 - "What are the brand voice guidelines for Hyundai?"
 - "Show me a chart of media spend by channel"
+- "Predict which campaigns are likely to succeed"
+- "Which clients are at risk of churning?"
+- "How should we optimize our media budget allocation?"
 
 =============================================================================
 */

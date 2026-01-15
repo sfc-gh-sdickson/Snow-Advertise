@@ -1,86 +1,86 @@
 <img src="Snowflake_Logo.svg" width="200">
 
-# Snow Health Intelligence Agent Solution
+# Innocean USA Advertising Intelligence Agent Solution
 
-## About Snow Health
+## About Innocean USA
 
-Snow Health provides comprehensive healthcare compliance software solutions, including learning management systems, credentialing services, and compliance management tools. Their platform is designed to automate and streamline processes for healthcare organizations of all sizes.
+Innocean USA is a full-service advertising agency headquartered in Huntington Beach, California. As the creative agency of record for Hyundai Motor America and a key partner for Kia America, Innocean delivers award-winning creative campaigns across automotive and other industries. The agency provides comprehensive marketing services including brand strategy, creative development, media planning and buying, digital marketing, experiential marketing, and multicultural advertising.
 
 ### Key Business Lines
 
-- **Learning Management**: CPR/BLS training, custom courses, continuing education, onboarding paths
-- **Credentialing Services**: Provider credential management, exclusions monitoring, verification, enrollment
-- **Compliance Management**: Policy/document management, incident reporting, contract management, accreditation support
+- **Creative Services**: Brand campaigns, TV/video production, print creative, digital content, social media creative
+- **Media Services**: Media planning, media buying, programmatic advertising, TV/streaming, digital/social, out-of-home (OOH)
+- **Digital & Performance**: Paid search (SEM), social media advertising, display/programmatic, CTV/OTT, SEO/content marketing
+- **Strategy & Analytics**: Brand strategy, consumer insights, market research, campaign analytics, attribution modeling
+- **Experiential & Multicultural**: Event marketing, sponsorship activation, Hispanic marketing, Asian-American marketing, African-American marketing
 
 ### Market Position
 
-- Leading healthcare compliance and training platform
-- Serving hospitals, clinics, and healthcare practices nationwide
-- Comprehensive solution for healthcare regulatory compliance
+- Full-service creative agency headquartered in Huntington Beach, CA
+- Agency of record for Hyundai Motor America and key partner for Kia America
+- Award-winning creative work recognized at Cannes Lions, Effie Awards, Clio Awards
+- Comprehensive capabilities across traditional and digital media channels
 
 ## Project Overview
 
-This Snowflake Intelligence solution demonstrates how Snow Health can leverage AI agents to analyze:
+This Snowflake Intelligence solution demonstrates how Innocean USA can leverage AI agents to analyze:
 
-- **Training & Learning**: Course completion rates, employee compliance, certification tracking
-- **Credentialing**: License verification, exclusions monitoring, expiration tracking
-- **Compliance**: Incident reports, policy acknowledgments, accreditation status
-- **Subscription Analytics**: Service utilization, renewal rates, customer health
-- **Revenue Intelligence**: Transaction trends, product performance, pricing optimization
-- **Support Operations**: Ticket resolution, agent performance, customer satisfaction
-- **Unstructured Data Search**: Semantic search over support transcripts, incident reports, and training materials using Cortex Search
+- **Campaign Performance**: Creative effectiveness, media efficiency, conversion metrics, brand lift
+- **Client Intelligence**: Account health, budget utilization, project pipeline, satisfaction scores
+- **Media Analytics**: Spend optimization, channel performance, audience reach, frequency management
+- **Creative Operations**: Asset production, approval workflows, talent management, content library
+- **Financial Intelligence**: Revenue forecasting, profitability analysis, billing accuracy, resource utilization
+- **Talent & Resources**: Team utilization, skill allocation, freelancer management, capacity planning
+- **Unstructured Data Search**: Semantic search over creative briefs, campaign reports, and brand guidelines using Cortex Search
 
 ## Database Schema
 
 The solution includes:
 
 1. **RAW Schema**: Core business tables
-   - ORGANIZATIONS: Healthcare organization master data
-   - EMPLOYEES: Staff and providers within organizations
-   - COURSES: Training courses and certifications
-   - COURSE_ENROLLMENTS: Employee course assignments
-   - COURSE_COMPLETIONS: Completed training with scores and certificates
-   - CREDENTIALS: Provider licenses and certifications
-   - CREDENTIAL_VERIFICATIONS: Verification records and status
-   - EXCLUSIONS_MONITORING: OIG/SAM database monitoring
-   - SUBSCRIPTIONS: Snow Health service subscriptions
-   - TRANSACTIONS: Financial transactions
-   - SUPPORT_TICKETS: Customer support cases
-   - INCIDENTS: Safety and compliance incidents
-   - POLICIES: Organizational policies and procedures
-   - POLICY_ACKNOWLEDGMENTS: Employee policy acknowledgments
-   - ACCREDITATIONS: Organization accreditations (JCAHO, etc.)
-   - SUPPORT_AGENTS: Support team data
-   - PRODUCTS: Snow Health product catalog
-   - MARKETING_CAMPAIGNS: Campaign tracking
-   - SUPPORT_TRANSCRIPTS: Unstructured support interaction records (25K transcripts)
-   - INCIDENT_REPORTS: Unstructured incident investigation documentation (15K reports)
-   - TRAINING_MATERIALS: Course content and compliance guides
+   - CLIENTS: Brand and account master data
+   - CAMPAIGNS: Marketing campaign records
+   - CREATIVE_ASSETS: Ads, videos, print materials, digital content
+   - MEDIA_PLACEMENTS: TV, digital, social, OOH media buys
+   - MEDIA_PERFORMANCE: Impressions, clicks, conversions, engagement
+   - EMPLOYEES: Staff and freelancer data
+   - PROJECTS: Client project records
+   - TIMESHEETS: Hours and resource allocation
+   - INVOICES: Client billing records
+   - INVOICE_LINE_ITEMS: Detailed billing breakdown
+   - VENDORS: Production partners and media vendors
+   - VENDOR_CONTRACTS: Partner agreements
+   - TALENT: Actors, voiceover artists, models
+   - TALENT_USAGE: Talent appearances in campaigns
+   - AUDIENCE_SEGMENTS: Target demographic definitions
+   - CAMPAIGN_AUDIENCES: Campaign targeting assignments
+   - CREATIVE_BRIEFS: Unstructured creative brief documents (20K briefs)
+   - CAMPAIGN_REPORTS: Unstructured campaign performance reports (15K reports)
+   - BRAND_GUIDELINES: Brand standards and guidelines documents
 
 2. **ANALYTICS Schema**: Curated views and semantic models
-   - Organization 360 views
-   - Employee training analytics
-   - Credential compliance metrics
-   - Subscription and revenue analytics
-   - Support efficiency metrics
-   - Incident tracking and analysis
+   - Campaign 360 views
+   - Client health analytics
+   - Media efficiency metrics
+   - Creative performance analytics
+   - Revenue and profitability views
+   - Resource utilization metrics
    - Semantic views for AI agents
 
 3. **Cortex Search Services**: Semantic search over unstructured data
-   - SUPPORT_TRANSCRIPTS_SEARCH: Search customer support interactions
-   - INCIDENT_REPORTS_SEARCH: Search incident investigation documentation
-   - TRAINING_MATERIALS_SEARCH: Search training content and compliance guides
+   - CREATIVE_BRIEFS_SEARCH: Search creative brief documents
+   - CAMPAIGN_REPORTS_SEARCH: Search campaign performance reports
+   - BRAND_GUIDELINES_SEARCH: Search brand standards and guidelines
 
 4. **ML Models (Optional)**: Predictive analytics models
-   - COMPLIANCE_RISK_PREDICTOR: Identify employees at risk of non-compliance
-   - COURSE_COMPLETION_PREDICTOR: Predict training completion likelihood
-   - SUBSCRIPTION_CHURN_PREDICTOR: Forecast subscription cancellation risk
+   - CAMPAIGN_PERFORMANCE_PREDICTOR: Predict campaign success likelihood
+   - CLIENT_CHURN_PREDICTOR: Identify accounts at risk of leaving
+   - BUDGET_OPTIMIZATION_MODEL: Recommend optimal media mix allocation
 
 ## Files
 
 ### Core Files
 - `README.md`: This comprehensive solution documentation
-- `MAPPING_DOCUMENT.md`: Entity mapping from GoDaddy template to Snow Health
 - `docs/AGENT_SETUP.md`: Configuration instructions for Snowflake agents
 - `docs/questions.md`: 10 complex questions the agent can answer
 
@@ -94,7 +94,7 @@ The solution includes:
 - `sql/ml/07_create_model_wrapper_functions.sql`: ML model wrapper functions (optional)
 
 ### ML Models (Optional)
-- `notebooks/snow_health_ml_models.ipynb`: Snowflake Notebook for training ML models
+- `notebooks/innocean_ml_models.ipynb`: Snowflake Notebook for training ML models
 - `docs/NOTEBOOK_ML_GUIDE.md`: Guide for using the ML notebook
 
 ## Setup Instructions
@@ -112,7 +112,7 @@ The solution includes:
 4. Test Cortex Search with sample queries in AGENT_SETUP.md Step 5
 
 ### ML Models Setup (Optional)
-5. Open `notebooks/snow_health_ml_models.ipynb` in Snowflake Notebooks
+5. Open `notebooks/innocean_ml_models.ipynb` in Snowflake Notebooks
 6. Add required packages: snowflake-ml-python, scikit-learn, xgboost, matplotlib
 7. Run all cells to train and register 3 ML models
 8. Execute `sql/ml/07_create_model_wrapper_functions.sql` to create wrapper procedures
@@ -122,63 +122,62 @@ The solution includes:
 ## Data Model Highlights
 
 ### Structured Data
-- Realistic healthcare training scenarios across CPR, OSHA, HIPAA, infection control
-- Multi-tier service subscriptions (Learning, Credentialing, Compliance, Full Suite)
-- Comprehensive organization segments (HOSPITAL, CLINIC, PRACTICE)
-- Provider credential tracking with verification workflows
-- Exclusions monitoring for OIG/SAM databases
-- Incident reporting and investigation workflows
-- Policy management with acknowledgment tracking
+- Realistic advertising campaign scenarios across automotive, retail, CPG verticals
+- Multi-channel media tracking (TV, Digital, Social, OOH, Radio, Print)
+- Comprehensive client portfolio management (retainer, project-based, AOR relationships)
+- Creative asset lifecycle tracking with versioning and approvals
+- Talent and usage rights management
+- Time and billing with project profitability analysis
 
 ### Unstructured Data
-- 25,000 customer support transcripts with realistic interactions
-- 15,000 incident investigation reports with root cause analysis
-- 3 comprehensive training materials (HIPAA, Infection Control, CPR/BLS)
+- 20,000 creative briefs with campaign objectives and strategies
+- 15,000 campaign performance reports with insights and recommendations
+- Comprehensive brand guidelines for major accounts
 - Semantic search powered by Snowflake Cortex Search
 - RAG (Retrieval Augmented Generation) ready for AI agents
 
 ## Key Features
 
 ✅ **Hybrid Data Architecture**: Combines structured tables with unstructured text data  
-✅ **Semantic Search**: Find similar issues and solutions by meaning, not just keywords  
-✅ **RAG-Ready**: Agent can retrieve context from support transcripts and training materials  
+✅ **Semantic Search**: Find similar campaigns and strategies by meaning, not just keywords  
+✅ **RAG-Ready**: Agent can retrieve context from creative briefs and brand guidelines  
 ✅ **Production-Ready Syntax**: All SQL verified against Snowflake documentation  
-✅ **Comprehensive Demo**: 1.5M+ transactions, 500K employees, 25K support transcripts  
+✅ **Comprehensive Demo**: 1M+ media impressions, 100K campaigns, 20K creative briefs  
 ✅ **Verified Syntax**: CREATE SEMANTIC VIEW and CREATE CORTEX SEARCH SERVICE syntax verified against official Snowflake documentation  
-✅ **Predictive ML Models**: Optional models for compliance risk, course completion, and churn prediction
+✅ **Predictive ML Models**: Optional models for campaign performance, client churn, and budget optimization
 
 ## Complex Questions Examples
 
 The agent can answer sophisticated questions like:
 
-1. **Training Compliance Analysis**: Identify employees overdue on mandatory training
-2. **Credential Expiration Risk**: Track licenses expiring in next 90 days
-3. **Exclusions Monitoring**: Providers with OIG/SAM alerts requiring action
-4. **Incident Pattern Analysis**: Common incident types and root causes
-5. **Subscription Health**: Customers at risk of churn based on usage patterns
-6. **Revenue Trend Analysis**: Monthly patterns with seasonality detection
-7. **Support Efficiency Metrics**: Resolution times by issue type and channel
-8. **Policy Compliance**: Organizations with low policy acknowledgment rates
-9. **Cross-Sell Opportunities**: Customers using only one service type
-10. **Course Effectiveness**: Training completion rates and score analysis
+1. **Campaign Performance Analysis**: Which campaigns exceeded KPIs and what creative elements drove success?
+2. **Media Efficiency**: What is the optimal media mix for automotive campaigns targeting millennials?
+3. **Client Health**: Which accounts show declining engagement or are at risk of review?
+4. **Creative Effectiveness**: How do video completion rates vary by platform and ad length?
+5. **Budget Optimization**: Where should we reallocate media spend to maximize ROI?
+6. **Resource Utilization**: Which teams are over/under capacity for the upcoming quarter?
+7. **Revenue Forecasting**: What is the projected revenue by client for next quarter?
+8. **Talent Management**: Which talent contracts are expiring and need renewal?
+9. **Cross-Sell Opportunities**: Which clients could benefit from additional services?
+10. **Competitive Analysis**: How does our campaign performance compare to industry benchmarks?
 
-Plus unstructured data questions for semantic search over transcripts, incidents, and training materials.
+Plus unstructured data questions for semantic search over briefs, reports, and brand guidelines.
 
 ### ML Model Predictions (Optional)
 
 With the optional ML models, the agent can also:
 
-11. **Compliance Risk Scoring**: Predict which employees are at risk of compliance violations
-12. **Course Completion Forecasting**: Identify enrolled employees likely to complete training on time
-13. **Subscription Churn Prevention**: Flag organizations at risk of canceling their subscriptions
+11. **Campaign Success Prediction**: Predict likelihood of campaign meeting performance targets
+12. **Client Retention Forecasting**: Identify accounts at risk of agency review or termination
+13. **Budget Allocation Optimization**: Recommend optimal media channel mix for specific objectives
 
 ## Semantic Views
 
 The solution includes three verified semantic views:
 
-1. **SV_LEARNING_CREDENTIALING_INTELLIGENCE**: Comprehensive view of training, courses, credentials, and compliance
-2. **SV_SUBSCRIPTION_REVENUE_INTELLIGENCE**: Subscriptions, products, transactions, and revenue metrics
-3. **SV_ORGANIZATION_SUPPORT_INTELLIGENCE**: Support tickets, agents, and customer satisfaction
+1. **SV_CAMPAIGN_CREATIVE_INTELLIGENCE**: Comprehensive view of campaigns, creative assets, and performance metrics
+2. **SV_MEDIA_PERFORMANCE_INTELLIGENCE**: Media placements, channel performance, and efficiency metrics
+3. **SV_CLIENT_FINANCIAL_INTELLIGENCE**: Client accounts, projects, invoicing, and profitability
 
 All semantic views follow the verified syntax structure:
 - TABLES clause with PRIMARY KEY definitions
@@ -191,20 +190,20 @@ All semantic views follow the verified syntax structure:
 
 Three Cortex Search services enable semantic search over unstructured data:
 
-1. **SUPPORT_TRANSCRIPTS_SEARCH**: Search 25,000 customer support interactions
-   - Find similar issues by description, not exact keywords
-   - Retrieve resolution procedures from past successful cases
-   - Analyze support patterns and best practices
+1. **CREATIVE_BRIEFS_SEARCH**: Search 20,000 creative briefs
+   - Find similar campaign strategies by objective, not exact keywords
+   - Retrieve successful approaches for similar client challenges
+   - Analyze creative patterns and best practices
 
-2. **INCIDENT_REPORTS_SEARCH**: Search 15,000 incident investigation reports
-   - Find similar incidents and root causes
-   - Identify effective corrective actions
-   - Retrieve investigation procedures
+2. **CAMPAIGN_REPORTS_SEARCH**: Search 15,000 campaign performance reports
+   - Find campaigns with similar performance patterns
+   - Identify effective optimization strategies
+   - Retrieve learnings from past campaigns
 
-3. **TRAINING_MATERIALS_SEARCH**: Search training content and guides
-   - Retrieve training procedures and protocols
-   - Find compliance guidance
-   - Access technical documentation
+3. **BRAND_GUIDELINES_SEARCH**: Search brand standards and guidelines
+   - Retrieve brand voice and messaging guidelines
+   - Find visual identity standards
+   - Access compliance requirements
 
 All Cortex Search services use verified syntax:
 - ON clause specifying search column
@@ -217,33 +216,33 @@ All Cortex Search services use verified syntax:
 
 The solution includes three optional predictive ML models trained using Snowflake ML:
 
-### 1. Compliance Risk Predictor
+### 1. Campaign Performance Predictor
 - **Model Type**: Random Forest Classifier
-- **Purpose**: Identify employees at high risk of compliance violations
-- **Features**: Training completion, credential status, policy acknowledgments, incident history
-- **Output**: Binary classification (high risk / low risk)
-- **Use Cases**: Proactive compliance intervention, audit preparation, risk mitigation
+- **Purpose**: Predict likelihood of campaign meeting or exceeding performance targets
+- **Features**: Creative type, media mix, budget level, target audience, historical performance
+- **Output**: Binary classification (will exceed KPIs / will underperform)
+- **Use Cases**: Campaign planning, resource allocation, client expectation setting
 
-### 2. Course Completion Predictor
-- **Model Type**: Logistic Regression
-- **Purpose**: Predict which enrolled employees will complete training on time
-- **Features**: Course characteristics, employee history, department, organization type
-- **Output**: Binary classification (will complete / won't complete)
-- **Use Cases**: Early intervention, resource allocation, completion rate forecasting
+### 2. Client Churn Predictor
+- **Model Type**: Gradient Boosting Classifier
+- **Purpose**: Identify client accounts at risk of agency review or termination
+- **Features**: Project volume, satisfaction scores, billing patterns, communication frequency
+- **Output**: Binary classification (at risk / healthy)
+- **Use Cases**: Proactive account management, retention strategies, relationship investment
 
-### 3. Subscription Churn Predictor
-- **Model Type**: Random Forest Classifier
-- **Purpose**: Identify organizations likely to cancel their subscriptions
-- **Features**: Usage patterns, support tickets, transaction activity, engagement metrics
-- **Output**: Binary classification (will churn / won't churn)
-- **Use Cases**: Customer retention, upsell opportunities, account health monitoring
+### 3. Budget Optimization Model
+- **Model Type**: Multi-output Regression
+- **Purpose**: Recommend optimal media channel allocation for campaign objectives
+- **Features**: Campaign goals, target audience, budget level, historical channel performance
+- **Output**: Recommended percentage allocation across channels
+- **Use Cases**: Media planning, budget allocation, efficiency optimization
 
 ### Model Integration
 
 Models are registered to Snowflake Model Registry and exposed via stored procedures:
-- `PREDICT_COMPLIANCE_RISK(department_filter)`
-- `PREDICT_COURSE_COMPLETION(course_category_filter)`
-- `PREDICT_SUBSCRIPTION_CHURN(service_type_filter)`
+- `PREDICT_CAMPAIGN_PERFORMANCE(campaign_type_filter)`
+- `PREDICT_CLIENT_CHURN(client_segment_filter)`
+- `OPTIMIZE_MEDIA_BUDGET(campaign_objective_filter)`
 
 These can be added as tools to the Intelligence Agent for predictive analytics capabilities.
 
@@ -304,41 +303,39 @@ Follow the detailed instructions in `docs/AGENT_SETUP.md` to:
 ### Verify Installation
 ```sql
 -- Check semantic views
-SHOW SEMANTIC VIEWS IN SCHEMA SNOW_HEALTH_INTELLIGENCE.ANALYTICS;
+SHOW SEMANTIC VIEWS IN SCHEMA INNOCEAN_INTELLIGENCE.ANALYTICS;
 
 -- Check Cortex Search services
-SHOW CORTEX SEARCH SERVICES IN SCHEMA SNOW_HEALTH_INTELLIGENCE.RAW;
+SHOW CORTEX SEARCH SERVICES IN SCHEMA INNOCEAN_INTELLIGENCE.RAW;
 
 -- Test Cortex Search
 SELECT PARSE_JSON(
   SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-      'SNOW_HEALTH_INTELLIGENCE.RAW.SUPPORT_TRANSCRIPTS_SEARCH',
-      '{"query": "course enrollment help", "limit":5}'
+      'INNOCEAN_INTELLIGENCE.RAW.CREATIVE_BRIEFS_SEARCH',
+      '{"query": "automotive brand awareness campaign", "limit":5}'
   )
 )['results'] as results;
 ```
 
 ### Sample Test Questions
-1. "How many employees have overdue mandatory training?"
-2. "Which providers have credentials expiring in the next 90 days?"
-3. "Show me incident reports about medication errors"
-4. "Find support transcripts about credentialing verification issues"
+1. "What campaigns exceeded their target ROI last quarter?"
+2. "Which clients have the highest media spend efficiency?"
+3. "Show me creative briefs for vehicle launch campaigns"
+4. "Find campaign reports about social media performance optimization"
 
 ## Data Volumes
 
-- **Organizations**: 50,000
-- **Employees**: 500,000
-- **Courses**: 20
-- **Course Enrollments**: 1,000,000
-- **Course Completions**: 750,000
-- **Credentials**: 100,000
-- **Subscriptions**: 75,000
-- **Transactions**: 1,500,000
-- **Support Tickets**: 75,000
-- **Incidents**: 50,000
-- **Support Transcripts**: 25,000 (unstructured)
-- **Incident Reports**: 15,000 (unstructured)
-- **Training Materials**: 3 comprehensive guides
+- **Clients**: 500
+- **Campaigns**: 100,000
+- **Creative Assets**: 250,000
+- **Media Placements**: 500,000
+- **Media Performance Records**: 2,000,000
+- **Employees**: 1,000
+- **Projects**: 50,000
+- **Invoices**: 200,000
+- **Creative Briefs**: 20,000 (unstructured)
+- **Campaign Reports**: 15,000 (unstructured)
+- **Brand Guidelines**: 50 comprehensive guides
 
 ## Architecture
 
@@ -348,29 +345,29 @@ SELECT PARSE_JSON(
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │              Semantic Views (Structured Data)              │ │
-│  │  • SV_LEARNING_CREDENTIALING_INTELLIGENCE                  │ │
-│  │  • SV_SUBSCRIPTION_REVENUE_INTELLIGENCE                    │ │
-│  │  • SV_ORGANIZATION_SUPPORT_INTELLIGENCE                    │ │
+│  │  • SV_CAMPAIGN_CREATIVE_INTELLIGENCE                       │ │
+│  │  • SV_MEDIA_PERFORMANCE_INTELLIGENCE                       │ │
+│  │  • SV_CLIENT_FINANCIAL_INTELLIGENCE                        │ │
 │  └────────────────────────────────────────────────────────────┘ │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │          Cortex Search (Unstructured Data)                 │ │
-│  │  • SUPPORT_TRANSCRIPTS_SEARCH                              │ │
-│  │  • INCIDENT_REPORTS_SEARCH                                 │ │
-│  │  • TRAINING_MATERIALS_SEARCH                               │ │
+│  │  • CREATIVE_BRIEFS_SEARCH                                  │ │
+│  │  • CAMPAIGN_REPORTS_SEARCH                                 │ │
+│  │  • BRAND_GUIDELINES_SEARCH                                 │ │
 │  └────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
         ┌──────────────────────────────────────────┐
         │         RAW Schema (Source Data)         │
-        │  • Organizations, Employees, Courses     │
-        │  • Credentials, Subscriptions            │
-        │  • Transactions, Support Tickets         │
-        │  • Incidents, Policies, Accreditations   │
-        │  • Support Transcripts (Unstructured)    │
-        │  • Incident Reports (Unstructured)       │
-        │  • Training Materials (Unstructured)     │
+        │  • Clients, Campaigns, Creative Assets   │
+        │  • Media Placements, Performance         │
+        │  • Employees, Projects, Timesheets       │
+        │  • Invoices, Vendors, Talent             │
+        │  • Creative Briefs (Unstructured)        │
+        │  • Campaign Reports (Unstructured)       │
+        │  • Brand Guidelines (Unstructured)       │
         └──────────────────────────────────────────┘
 ```
 
@@ -384,11 +381,11 @@ For questions or issues:
 
 ## Version History
 
-- **v1.0** (October 2025): Initial release
+- **v1.0** (January 2026): Initial release
   - Verified semantic view syntax
   - Verified Cortex Search syntax
-  - 50K organizations, 500K employees, 1.5M transactions
-  - 25K support transcripts with semantic search
+  - 500 clients, 100K campaigns, 2M media performance records
+  - 20K creative briefs with semantic search
   - 10 complex test questions
   - Comprehensive documentation
 
@@ -398,10 +395,9 @@ This solution is provided as a template for building Snowflake Intelligence agen
 
 ---
 
-**Created**: October 2025  
-**Template Based On**: GoDaddy Intelligence Demo  
+**Created**: January 2026  
+**Template Based On**: Snow Health Intelligence Demo  
 **Snowflake Documentation**: Syntax verified against official documentation  
-**Target Use Case**: Snow Health learning, credentialing, and compliance intelligence
+**Target Use Case**: Innocean USA advertising campaign, media, and client intelligence
 
 **NO GUESSING - ALL SYNTAX VERIFIED** ✅
-

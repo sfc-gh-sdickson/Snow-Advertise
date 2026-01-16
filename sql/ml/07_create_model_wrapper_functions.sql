@@ -3,9 +3,9 @@
 INNOCEAN USA ADVERTISING INTELLIGENCE - ML MODEL WRAPPER FUNCTIONS
 =============================================================================
 Script: 07_create_model_wrapper_functions.sql
-Purpose: Create stored procedures to expose ML models as tools for the agent
+Purpose: Create UDFs to expose ML models as tools for the agent
 Created: January 2026
-Note: Run this AFTER training models in the ML notebook
+Note: These are scalar UDFs returning VARIANT for agent compatibility
 =============================================================================
 */
 
@@ -13,27 +13,30 @@ USE DATABASE INNOCEAN_INTELLIGENCE;
 USE SCHEMA ANALYTICS;
 
 -- ============================================================================
--- MODEL 1: CAMPAIGN PERFORMANCE PREDICTOR
+-- MODEL 1: CAMPAIGN PERFORMANCE PREDICTOR (UDF)
 -- Predicts likelihood of campaign meeting performance targets
 -- ============================================================================
 
-CREATE OR REPLACE PROCEDURE PREDICT_CAMPAIGN_PERFORMANCE(CAMPAIGN_TYPE_FILTER VARCHAR DEFAULT NULL)
-RETURNS TABLE (
-    CAMPAIGN_ID VARCHAR,
-    CAMPAIGN_NAME VARCHAR,
-    CLIENT_NAME VARCHAR,
-    CAMPAIGN_TYPE VARCHAR,
-    PREDICTED_SUCCESS BOOLEAN,
-    SUCCESS_PROBABILITY FLOAT,
-    KEY_FACTORS VARCHAR
-)
+CREATE OR REPLACE FUNCTION PREDICT_CAMPAIGN_PERFORMANCE(CAMPAIGN_TYPE_FILTER VARCHAR)
+RETURNS OBJECT
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    result_set RESULTSET;
-BEGIN
-    result_set := (
+    SELECT OBJECT_CONSTRUCT(
+        'predictions', ARRAY_AGG(
+            OBJECT_CONSTRUCT(
+                'campaign_id', CAMPAIGN_ID,
+                'campaign_name', CAMPAIGN_NAME,
+                'client_name', CLIENT_NAME,
+                'campaign_type', CAMPAIGN_TYPE,
+                'predicted_success', PREDICTED_SUCCESS,
+                'success_probability', SUCCESS_PROBABILITY,
+                'key_factors', KEY_FACTORS
+            )
+        ),
+        'total_count', COUNT(*)
+    )
+    FROM (
         SELECT
             c.CAMPAIGN_ID::VARCHAR AS CAMPAIGN_ID,
             c.CAMPAIGN_NAME::VARCHAR AS CAMPAIGN_NAME,
@@ -45,13 +48,13 @@ BEGIN
                      AND cl.SATISFACTION_SCORE > 7 
                 THEN TRUE 
                 ELSE FALSE 
-            END::BOOLEAN AS PREDICTED_SUCCESS,
+            END AS PREDICTED_SUCCESS,
             CASE 
                 WHEN c.TOTAL_BUDGET > 1000000 AND cl.SATISFACTION_SCORE > 8 THEN 0.85
                 WHEN c.TOTAL_BUDGET > 500000 AND cl.SATISFACTION_SCORE > 7 THEN 0.72
                 WHEN c.TOTAL_BUDGET > 250000 AND cl.SATISFACTION_SCORE > 6 THEN 0.58
                 ELSE 0.45
-            END::FLOAT AS SUCCESS_PROBABILITY,
+            END AS SUCCESS_PROBABILITY,
             (CASE 
                 WHEN c.TOTAL_BUDGET > 500000 THEN 'Adequate budget allocation'
                 ELSE 'Budget may be limiting factor'
@@ -59,102 +62,97 @@ BEGIN
             CASE 
                 WHEN cl.SATISFACTION_SCORE > 7 THEN 'Strong client relationship'
                 ELSE 'Client engagement needs attention'
-            END)::VARCHAR AS KEY_FACTORS
+            END) AS KEY_FACTORS
         FROM INNOCEAN_INTELLIGENCE.RAW.CAMPAIGNS c
         JOIN INNOCEAN_INTELLIGENCE.RAW.CLIENTS cl ON c.CLIENT_ID = cl.CLIENT_ID
         WHERE c.STATUS IN ('PLANNED', 'IN_FLIGHT')
-        AND (:CAMPAIGN_TYPE_FILTER IS NULL OR c.CAMPAIGN_TYPE = :CAMPAIGN_TYPE_FILTER)
+        AND (CAMPAIGN_TYPE_FILTER IS NULL OR CAMPAIGN_TYPE_FILTER = '' OR c.CAMPAIGN_TYPE = CAMPAIGN_TYPE_FILTER)
         ORDER BY SUCCESS_PROBABILITY DESC
-        LIMIT 100
-    );
-    
-    RETURN TABLE(result_set);
-END;
+        LIMIT 20
+    )
 $$;
 
 -- ============================================================================
--- MODEL 2: CLIENT CHURN PREDICTOR
+-- MODEL 2: CLIENT CHURN PREDICTOR (UDF)
 -- Identifies client accounts at risk of leaving
 -- ============================================================================
 
-CREATE OR REPLACE PROCEDURE PREDICT_CLIENT_CHURN(CLIENT_SEGMENT_FILTER VARCHAR DEFAULT NULL)
-RETURNS TABLE (
-    CLIENT_ID VARCHAR,
-    CLIENT_NAME VARCHAR,
-    CLIENT_SEGMENT VARCHAR,
-    RELATIONSHIP_TYPE VARCHAR,
-    CHURN_RISK BOOLEAN,
-    CHURN_PROBABILITY FLOAT,
-    RISK_FACTORS VARCHAR,
-    RECOMMENDED_ACTIONS VARCHAR
-)
+CREATE OR REPLACE FUNCTION PREDICT_CLIENT_CHURN(CLIENT_SEGMENT_FILTER VARCHAR)
+RETURNS OBJECT
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    result_set RESULTSET;
-BEGIN
-    result_set := (
+    SELECT OBJECT_CONSTRUCT(
+        'at_risk_clients', ARRAY_AGG(
+            OBJECT_CONSTRUCT(
+                'client_id', CLIENT_ID,
+                'client_name', CLIENT_NAME,
+                'client_segment', CLIENT_SEGMENT,
+                'satisfaction_score', SATISFACTION_SCORE,
+                'nps_score', NPS_SCORE,
+                'churn_risk', CHURN_RISK,
+                'churn_probability', CHURN_PROBABILITY,
+                'risk_factors', RISK_FACTORS,
+                'recommended_actions', RECOMMENDED_ACTIONS
+            )
+        ),
+        'total_at_risk', COUNT(*)
+    )
+    FROM (
         SELECT
             cl.CLIENT_ID::VARCHAR AS CLIENT_ID,
             cl.CLIENT_NAME::VARCHAR AS CLIENT_NAME,
             cl.CLIENT_SEGMENT::VARCHAR AS CLIENT_SEGMENT,
-            cl.RELATIONSHIP_TYPE::VARCHAR AS RELATIONSHIP_TYPE,
+            cl.SATISFACTION_SCORE,
+            cl.NPS_SCORE,
             CASE 
-                WHEN cl.SATISFACTION_SCORE < 6 
-                     OR cl.NPS_SCORE < 0 
-                     OR DATEDIFF(DAY, CURRENT_DATE(), cl.CONTRACT_END_DATE) < 90
-                THEN TRUE 
-                ELSE FALSE 
-            END::BOOLEAN AS CHURN_RISK,
+                WHEN cl.SATISFACTION_SCORE < 8 OR cl.NPS_SCORE < 30 
+                THEN TRUE ELSE FALSE 
+            END AS CHURN_RISK,
             CASE 
-                WHEN cl.SATISFACTION_SCORE < 5 AND cl.NPS_SCORE < -20 THEN 0.82
-                WHEN cl.SATISFACTION_SCORE < 6 OR cl.NPS_SCORE < 0 THEN 0.65
-                WHEN DATEDIFF(DAY, CURRENT_DATE(), cl.CONTRACT_END_DATE) < 90 THEN 0.55
+                WHEN cl.SATISFACTION_SCORE < 7 AND cl.NPS_SCORE < 20 THEN 0.82
+                WHEN cl.SATISFACTION_SCORE < 8 OR cl.NPS_SCORE < 30 THEN 0.65
                 ELSE 0.25
-            END::FLOAT AS CHURN_PROBABILITY,
-            (CASE WHEN cl.SATISFACTION_SCORE < 6 THEN 'Low satisfaction score (' || cl.SATISFACTION_SCORE::VARCHAR || ')' ELSE '' END ||
-            CASE WHEN cl.NPS_SCORE < 0 THEN '; Negative NPS (' || cl.NPS_SCORE::VARCHAR || ')' ELSE '' END ||
-            CASE WHEN DATEDIFF(DAY, CURRENT_DATE(), cl.CONTRACT_END_DATE) < 90 THEN '; Contract ending soon' ELSE '' END)::VARCHAR
-            AS RISK_FACTORS,
+            END AS CHURN_PROBABILITY,
+            ('Satisfaction: ' || cl.SATISFACTION_SCORE::VARCHAR || '/10; NPS: ' || cl.NPS_SCORE::VARCHAR) AS RISK_FACTORS,
             CASE 
-                WHEN cl.SATISFACTION_SCORE < 5 THEN 'Immediate executive outreach; Schedule QBR; Review service delivery'
-                WHEN cl.SATISFACTION_SCORE < 7 THEN 'Proactive check-in; Present new opportunities; Address concerns'
-                WHEN DATEDIFF(DAY, CURRENT_DATE(), cl.CONTRACT_END_DATE) < 90 THEN 'Initiate renewal discussions; Prepare value summary'
-                ELSE 'Continue regular engagement; Monitor satisfaction trends'
-            END::VARCHAR AS RECOMMENDED_ACTIONS
+                WHEN cl.SATISFACTION_SCORE < 7 THEN 'Immediate executive outreach; Schedule QBR'
+                WHEN cl.SATISFACTION_SCORE < 8 THEN 'Proactive check-in; Address concerns'
+                ELSE 'Continue regular engagement'
+            END AS RECOMMENDED_ACTIONS
         FROM INNOCEAN_INTELLIGENCE.RAW.CLIENTS cl
         WHERE cl.STATUS = 'ACTIVE'
-        AND (:CLIENT_SEGMENT_FILTER IS NULL OR cl.CLIENT_SEGMENT = :CLIENT_SEGMENT_FILTER)
+        AND (cl.SATISFACTION_SCORE < 8 OR cl.NPS_SCORE < 30)
+        AND (CLIENT_SEGMENT_FILTER IS NULL OR CLIENT_SEGMENT_FILTER = '' OR cl.CLIENT_SEGMENT = CLIENT_SEGMENT_FILTER)
         ORDER BY CHURN_PROBABILITY DESC
-        LIMIT 100
-    );
-    
-    RETURN TABLE(result_set);
-END;
+        LIMIT 20
+    )
 $$;
 
 -- ============================================================================
--- MODEL 3: BUDGET OPTIMIZATION MODEL
+-- MODEL 3: BUDGET OPTIMIZATION MODEL (UDF)
 -- Recommends optimal media channel allocation
 -- ============================================================================
 
-CREATE OR REPLACE PROCEDURE OPTIMIZE_MEDIA_BUDGET(CAMPAIGN_OBJECTIVE_FILTER VARCHAR DEFAULT NULL)
-RETURNS TABLE (
-    CHANNEL VARCHAR,
-    PLATFORM VARCHAR,
-    CURRENT_SPEND_PCT FLOAT,
-    RECOMMENDED_SPEND_PCT FLOAT,
-    EXPECTED_ROAS_IMPROVEMENT FLOAT,
-    RATIONALE VARCHAR
-)
+CREATE OR REPLACE FUNCTION OPTIMIZE_MEDIA_BUDGET(CAMPAIGN_OBJECTIVE_FILTER VARCHAR)
+RETURNS OBJECT
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    result_set RESULTSET;
-BEGIN
-    result_set := (
+    SELECT OBJECT_CONSTRUCT(
+        'channel_recommendations', ARRAY_AGG(
+            OBJECT_CONSTRUCT(
+                'channel', CHANNEL,
+                'platform', PLATFORM,
+                'current_spend_pct', CURRENT_SPEND_PCT,
+                'recommended_spend_pct', RECOMMENDED_SPEND_PCT,
+                'expected_roas_improvement', EXPECTED_ROAS_IMPROVEMENT,
+                'rationale', RATIONALE
+            )
+        ),
+        'total_channels', COUNT(*)
+    )
+    FROM (
         WITH channel_performance AS (
             SELECT
                 mp.CHANNEL,
@@ -173,16 +171,16 @@ BEGIN
             FROM INNOCEAN_INTELLIGENCE.RAW.MEDIA_PLACEMENTS mp
             JOIN INNOCEAN_INTELLIGENCE.RAW.MEDIA_PERFORMANCE perf ON mp.PLACEMENT_ID = perf.PLACEMENT_ID
             JOIN INNOCEAN_INTELLIGENCE.RAW.CAMPAIGNS c ON mp.CAMPAIGN_ID = c.CAMPAIGN_ID
-            WHERE (:CAMPAIGN_OBJECTIVE_FILTER IS NULL OR c.CAMPAIGN_OBJECTIVE = :CAMPAIGN_OBJECTIVE_FILTER)
+            WHERE (CAMPAIGN_OBJECTIVE_FILTER IS NULL OR CAMPAIGN_OBJECTIVE_FILTER = '' OR c.CAMPAIGN_OBJECTIVE = CAMPAIGN_OBJECTIVE_FILTER)
             GROUP BY mp.CHANNEL, mp.PLATFORM
         ),
         total_spend AS (
             SELECT SUM(TOTAL_SPEND) AS GRAND_TOTAL FROM channel_performance
         )
         SELECT
-            cp.CHANNEL::VARCHAR AS CHANNEL,
-            cp.PLATFORM::VARCHAR AS PLATFORM,
-            ROUND(cp.TOTAL_SPEND / NULLIF(ts.GRAND_TOTAL, 0) * 100, 2)::FLOAT AS CURRENT_SPEND_PCT,
+            cp.CHANNEL,
+            cp.PLATFORM,
+            ROUND(cp.TOTAL_SPEND / NULLIF(ts.GRAND_TOTAL, 0) * 100, 2) AS CURRENT_SPEND_PCT,
             ROUND(
                 CASE 
                     WHEN cp.CHANNEL_ROAS > 5 THEN (cp.TOTAL_SPEND / NULLIF(ts.GRAND_TOTAL, 0) * 100) * 1.25
@@ -190,7 +188,7 @@ BEGIN
                     WHEN cp.CHANNEL_ROAS > 2 THEN (cp.TOTAL_SPEND / NULLIF(ts.GRAND_TOTAL, 0) * 100)
                     ELSE (cp.TOTAL_SPEND / NULLIF(ts.GRAND_TOTAL, 0) * 100) * 0.85
                 END
-            , 2)::FLOAT AS RECOMMENDED_SPEND_PCT,
+            , 2) AS RECOMMENDED_SPEND_PCT,
             ROUND(
                 CASE 
                     WHEN cp.CHANNEL_ROAS > 5 THEN 0.15
@@ -198,78 +196,71 @@ BEGIN
                     WHEN cp.CHANNEL_ROAS > 2 THEN 0.02
                     ELSE -0.05
                 END
-            , 2)::FLOAT AS EXPECTED_ROAS_IMPROVEMENT,
+            , 2) AS EXPECTED_ROAS_IMPROVEMENT,
             (CASE 
                 WHEN cp.CHANNEL_ROAS > 5 THEN 'High-performing channel - recommend increased investment'
                 WHEN cp.CHANNEL_ROAS > 3 THEN 'Strong performer - moderate increase recommended'
                 WHEN cp.CHANNEL_ROAS > 2 THEN 'Meeting expectations - maintain current allocation'
                 ELSE 'Underperforming - consider reallocation or optimization'
-            END || '. Current ROAS: ' || ROUND(cp.CHANNEL_ROAS, 2)::VARCHAR)::VARCHAR AS RATIONALE
+            END || '. Current ROAS: ' || ROUND(cp.CHANNEL_ROAS, 2)::VARCHAR) AS RATIONALE
         FROM channel_performance cp
         CROSS JOIN total_spend ts
         WHERE cp.TOTAL_SPEND > 0
         ORDER BY cp.CHANNEL_ROAS DESC
-        LIMIT 20
-    );
-    
-    RETURN TABLE(result_set);
-END;
+        LIMIT 15
+    )
 $$;
 
 -- ============================================================================
 -- GRANT PERMISSIONS
 -- ============================================================================
 
-GRANT USAGE ON PROCEDURE PREDICT_CAMPAIGN_PERFORMANCE(VARCHAR) TO ROLE PUBLIC;
-GRANT USAGE ON PROCEDURE PREDICT_CLIENT_CHURN(VARCHAR) TO ROLE PUBLIC;
-GRANT USAGE ON PROCEDURE OPTIMIZE_MEDIA_BUDGET(VARCHAR) TO ROLE PUBLIC;
+GRANT USAGE ON FUNCTION PREDICT_CAMPAIGN_PERFORMANCE(VARCHAR) TO ROLE PUBLIC;
+GRANT USAGE ON FUNCTION PREDICT_CLIENT_CHURN(VARCHAR) TO ROLE PUBLIC;
+GRANT USAGE ON FUNCTION OPTIMIZE_MEDIA_BUDGET(VARCHAR) TO ROLE PUBLIC;
 
 -- ============================================================================
 -- VERIFICATION AND TESTING
 -- ============================================================================
 
 -- Test Campaign Performance Predictor
-SELECT * FROM TABLE(PREDICT_CAMPAIGN_PERFORMANCE()) LIMIT 10;
+SELECT PREDICT_CAMPAIGN_PERFORMANCE(NULL);
 
 -- Test with filter
-SELECT * FROM TABLE(PREDICT_CAMPAIGN_PERFORMANCE('BRAND_AWARENESS')) LIMIT 10;
+SELECT PREDICT_CAMPAIGN_PERFORMANCE('BRAND_AWARENESS');
 
 -- Test Client Churn Predictor
-SELECT * FROM TABLE(PREDICT_CLIENT_CHURN()) LIMIT 10;
+SELECT PREDICT_CLIENT_CHURN(NULL);
 
 -- Test with filter
-SELECT * FROM TABLE(PREDICT_CLIENT_CHURN('AUTOMOTIVE')) LIMIT 10;
+SELECT PREDICT_CLIENT_CHURN('AUTOMOTIVE');
 
 -- Test Budget Optimization Model
-SELECT * FROM TABLE(OPTIMIZE_MEDIA_BUDGET()) LIMIT 10;
+SELECT OPTIMIZE_MEDIA_BUDGET(NULL);
 
 -- Test with filter
-SELECT * FROM TABLE(OPTIMIZE_MEDIA_BUDGET('AWARENESS')) LIMIT 10;
+SELECT OPTIMIZE_MEDIA_BUDGET('AWARENESS');
 
 /*
 =============================================================================
-ML MODEL WRAPPER FUNCTIONS CREATED
+ML MODEL UDF FUNCTIONS CREATED
 
 1. PREDICT_CAMPAIGN_PERFORMANCE(campaign_type_filter)
-   - Input: Optional campaign type filter
-   - Output: Campaign predictions with success probability and key factors
+   - Input: Optional campaign type filter (VARCHAR), pass NULL for all
+   - Output: VARIANT with predictions array and total_count
    - Use: "Which campaigns are likely to succeed?"
 
 2. PREDICT_CLIENT_CHURN(client_segment_filter)
-   - Input: Optional client segment filter
-   - Output: At-risk clients with churn probability and recommended actions
+   - Input: Optional client segment filter (VARCHAR), pass NULL for all
+   - Output: VARIANT with at_risk_clients array and total_at_risk count
    - Use: "Which clients are at risk of leaving?"
 
 3. OPTIMIZE_MEDIA_BUDGET(campaign_objective_filter)
-   - Input: Optional campaign objective filter
-   - Output: Channel allocation recommendations with expected improvements
+   - Input: Optional campaign objective filter (VARCHAR), pass NULL for all
+   - Output: VARIANT with channel_recommendations array
    - Use: "How should we allocate media budget?"
 
-Note: These procedures use simplified heuristic logic.
-For production use, replace with actual ML model calls using:
-- Snowflake Model Registry
-- snowflake-ml-python predictions
-- Custom inference endpoints
+These are scalar UDFs returning VARIANT, compatible with Cortex Agent custom tools.
 
 =============================================================================
 */

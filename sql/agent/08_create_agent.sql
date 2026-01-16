@@ -116,21 +116,51 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
                 "tool_spec": {
                     "type": "generic",
                     "name": "predict_campaign_performance",
-                    "description": "ML model that predicts likelihood of campaigns meeting or exceeding performance targets. Returns success probability and key factors. Use for questions about campaign success predictions, which campaigns will perform well, and campaign planning."
+                    "description": "ML model that predicts likelihood of campaigns meeting or exceeding performance targets. Returns success probability and key factors. Use for questions about campaign success predictions, which campaigns will perform well, and campaign planning.",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "CAMPAIGN_TYPE_FILTER": {
+                                "type": "string",
+                                "description": "Optional filter for campaign type (e.g., BRAND_AWARENESS, LEAD_GENERATION, PRODUCT_LAUNCH). Pass NULL or omit for all campaigns."
+                            }
+                        },
+                        "required": []
+                    }
                 }
             },
             {
                 "tool_spec": {
                     "type": "generic",
                     "name": "predict_client_churn",
-                    "description": "ML model that identifies client accounts at risk of leaving or going to agency review. Returns churn probability, risk factors, and recommended actions. Use for questions about client retention risk, at-risk accounts, and churn prevention."
+                    "description": "ML model that identifies client accounts at risk of leaving or going to agency review. Returns churn probability, risk factors, and recommended actions. Use for questions about client retention risk, at-risk accounts, and churn prevention.",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "CLIENT_SEGMENT_FILTER": {
+                                "type": "string",
+                                "description": "Optional filter for client segment (e.g., AUTOMOTIVE, RETAIL, CPG). Pass NULL or omit for all clients."
+                            }
+                        },
+                        "required": []
+                    }
                 }
             },
             {
                 "tool_spec": {
                     "type": "generic",
                     "name": "optimize_media_budget",
-                    "description": "ML model that recommends optimal media channel budget allocation based on historical performance. Returns current vs recommended spend percentages with expected ROAS improvement. Use for questions about media mix optimization, budget allocation, and channel investment decisions."
+                    "description": "ML model that recommends optimal media channel budget allocation based on historical performance. Returns current vs recommended spend percentages with expected ROAS improvement. Use for questions about media mix optimization, budget allocation, and channel investment decisions.",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "CAMPAIGN_OBJECTIVE_FILTER": {
+                                "type": "string",
+                                "description": "Optional filter for campaign objective (e.g., AWARENESS, CONSIDERATION, CONVERSION). Pass NULL or omit for all objectives."
+                            }
+                        },
+                        "required": []
+                    }
                 }
             }
         ],
@@ -175,28 +205,28 @@ CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.INNOCEAN_INTELLIGENCE
                 "columns": ["GUIDELINE_ID", "GUIDELINE_TITLE", "GUIDELINE_CONTENT", "SECTION_TYPE", "BRAND_VOICE", "DO_DONT_GUIDELINES"]
             },
             "predict_campaign_performance": {
-                "type": "procedure",
-                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CAMPAIGN_PERFORMANCE(VARCHAR)",
+                "type": "function",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                }
+                },
+                "identifier": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CAMPAIGN_PERFORMANCE"
             },
             "predict_client_churn": {
-                "type": "procedure",
-                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CLIENT_CHURN(VARCHAR)",
+                "type": "function",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                }
+                },
+                "identifier": "INNOCEAN_INTELLIGENCE.ANALYTICS.PREDICT_CLIENT_CHURN"
             },
             "optimize_media_budget": {
-                "type": "procedure",
-                "object_name": "INNOCEAN_INTELLIGENCE.ANALYTICS.OPTIMIZE_MEDIA_BUDGET(VARCHAR)",
+                "type": "function",
                 "execution_environment": {
                     "type": "warehouse",
                     "warehouse": "INNOCEAN_WH"
-                }
+                },
+                "identifier": "INNOCEAN_INTELLIGENCE.ANALYTICS.OPTIMIZE_MEDIA_BUDGET"
             }
         }
     }
